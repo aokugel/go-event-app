@@ -26,8 +26,10 @@ func getEvents(context *gin.Context) {
 func postEvent(context *gin.Context) {
 	var newEvent models.Event
 	if err := context.BindJSON(&newEvent); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
 		return
 	}
+	newEvent.ID = len(models.Events) + 1
 	models.Events = append(models.Events, newEvent)
 	context.IndentedJSON(http.StatusCreated, models.Events)
 

@@ -10,10 +10,10 @@ var Events = []Event{
 
 type Event struct {
 	ID       int
-	Name     string
-	Location string
-	Date     time.Time
-	Invitees int
+	Name     string    `binding:"required"`
+	Location string    `binding:"required"`
+	Date     time.Time `binding:"required"`
+	Invitees int       `binding:"required"`
 }
 
 func NewEvent(id int, name string, location string, date time.Time, invitees int) *Event {
