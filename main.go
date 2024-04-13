@@ -3,45 +3,35 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
 
+	"example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 )
-
-type Event struct {
-	ID       int
-	Name     string
-	Location string
-	Date     time.Time
-	Invitees int
-}
-
-func NewEvent(id int, name string, location string, date time.Time, invitees int) *Event {
-	return &Event{
-		ID:       id,
-		Name:     name,
-		Location: location,
-		Date:     date,
-		Invitees: invitees,
-	}
-
-}
 
 func main() {
 
 	fmt.Println("go event app")
 	r := gin.Default()
 	r.GET("/events", getEvents)
+	r.POST("/events", postEvent)
 	r.Run(":8080")
 }
 
 func getEvents(context *gin.Context) {
-	event1 := NewEvent(1, "Wedding", "Downtown Abbey", time.Now(), 400)
-	event2 := NewEvent(2, "Funeral", "St Peters Cathedral", time.Now(), 25)
-	event3 := NewEvent(3, "Deposition", "Downtown Courthouse", time.Now(), 400)
-	events := []Event{*event1, *event2, *event3}
+	// event1 := models.NewEvent(1, "Wedding", "Downtown Abbey", time.Now(), 400)
+	// event2 := models.NewEvent(2, "Funeral", "St Peters Cathedral", time.Now(), 25)
+	// event3 := models.NewEvent(3, "Deposition", "Downtown Courthouse", time.Now(), 400)
+	// events := []models.Event{*event1, *event2, *event3}
 
-	context.JSON(http.StatusOK, events)
+	context.JSON(http.StatusOK, models.Events)
 }
 
-//gin.H{}
+func postEvent(context *gin.Context) {
+	var newEvent models.Event
+	if err := context.BindJSON(&newEvent); err != nil {
+		return
+	}
+	models.Events = append(models.Events, newEvent)
+	context.IndentedJSON(http.StatusCreated, models.Events)
+
+}
