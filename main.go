@@ -5,11 +5,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"example.com/rest-api/db"
 	"example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
+	db.InitDB()
 
 	fmt.Println("go event app")
 	r := gin.Default()
@@ -20,7 +23,8 @@ func main() {
 }
 
 func getEvents(context *gin.Context) {
-	context.JSON(http.StatusOK, models.Events)
+	events := db.GetEvents()
+	context.JSON(http.StatusOK, events)
 }
 
 func postEvent(context *gin.Context) {
@@ -29,17 +33,17 @@ func postEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
 		return
 	}
-	newEvent.ID = len(models.Events) + 1
-	models.Events = append(models.Events, newEvent)
-	context.IndentedJSON(http.StatusCreated, models.Events)
+	db.InsertEventIntoDB(&newEvent)
+	fmt.Println(newEvent)
+	context.IndentedJSON(http.StatusCreated, db.GetEvents())
 
 }
 
 func getEventByID(context *gin.Context) {
 	id, _ := strconv.Atoi(context.Param("id"))
 
-	for _, event := range models.Events {
-		if event.ID == id {
+	for _, event := range db.GetEvents() {
+		if event.ID == int64(id) {
 			context.IndentedJSON(http.StatusOK, event)
 			return
 		}

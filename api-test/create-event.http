@@ -2,8 +2,8 @@ POST http://localhost:8080/events
 content-type: application/json
 
 {
-    "Name": "Rodeo",
-    "Location": "El Rodeo drive",
-    "Date": "2024-05-13T14:59:27.725943945-05:00",
-    "Invitees": 12000
+    "Name": "Olympic games",
+    "Location": "Somewhere over the mother loving rainboy",
+    "Date": "2025-05-13T14:59:27.725943945-05:00",
+    "Invitees": 200000
 }
