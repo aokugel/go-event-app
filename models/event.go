@@ -2,28 +2,25 @@ package models
 
 import "time"
 
-// var Events = []Event{
-// 	{ID: 1, Name: "Wedding", Location: "Downtown Abbey", Date: time.Now(), Invitees: 400},
-// 	{ID: 2, Name: "Funeral", Location: "Some church", Date: time.Now(), Invitees: 25},
-// 	{ID: 3, Name: "Deposition", Location: "Courthouse", Date: time.Now(), Invitees: 100},
-// }
-
 type Event struct {
-	ID       int64
-	Name     string    `binding:"required"`
-	Location string    `binding:"required"`
-	Date     time.Time `binding:"required"`
-	Invitees int       `binding:"required"`
-	//UserID int64
+	ID          int64
+	Name        string `binding:"required"`
+	Description string
+	Location    string    `binding:"required"`
+	Date        time.Time `binding:"required"`
+	Invitees    int       `binding:"required"`
+	UserID      int64
 }
 
-func NewEvent(id int64, name string, location string, date time.Time, invitees int) *Event {
+func NewEvent(id int64, name string, description string, location string, date time.Time, invitees int, uid int64) *Event {
 	return &Event{
-		ID:       id,
-		Name:     name,
-		Location: location,
-		Date:     date,
-		Invitees: invitees,
+		ID:          id,
+		Name:        name,
+		Description: description,
+		Location:    location,
+		Date:        date,
+		Invitees:    invitees,
+		UserID:      uid,
 	}
 
 }

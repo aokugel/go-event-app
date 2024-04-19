@@ -1,2 +1,2 @@
-GET http://localhost:8080/events/12
+GET http://localhost:8080/events/
 content-type: application/json
