@@ -87,6 +87,24 @@ func UpdateEvent(e *models.Event) error {
 	return err
 }
 
+func DeleteEvent(id int64) error {
+	deleteEvent := `
+	DELETE FROM events 
+	WHERE id = ?;`
+	stmt, err := DB.Prepare(deleteEvent)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(id)
+	if err != nil {
+		panic(err)
+	}
+	id, err = result.LastInsertId()
+	return err
+}
+
 func GetEvents() []models.Event {
 	getEvents := `
 	SELECT *
