@@ -1,0 +1,7 @@
+PATCH http://localhost:8080/events/15
+content-type: application/json
+
+{
+    "Location": "An abounded mall",
+    "Invitees": 45
+}
