@@ -1,11 +1,9 @@
-PATCH http://localhost:8080/events/5
+PATCH http://localhost:8080/events/1
 content-type: application/json
 
 {
-    "Name": "This is a test",
+    "Name": "This is lit no cap",
     "Description":  "Its the olympics, what more do you need to know",
     "Location": "Somewhere over the mother loving rainboy",
-    "Date": "2025-05-13T14:59:27.725943945-05:00",
-    "Invitees": 200000,
-    "UserID": 5
+    "Date": "2025-05-13T14:59:27.725943945-05:00"
 }
