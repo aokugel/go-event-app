@@ -33,13 +33,28 @@ func createTables() {
 		location TEXT NOT NULL,
 		date DATETIME NOT NULL,
 		invitees INTEGER NOT NULL,
-		userid INTEGER
-	)`
+		userid INTEGER,
+		FOREIGN KEY(userid) REFERENCES users(id)
+	);`
 
-	_, err := DB.Exec(createEventsTable)
-
+	createUsersTable := `
+	CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		firstName TEXT,
+		lastName TEXT NOT NULL,
+		email TEXT NOT NULL
+	);
+	`
+	_, err := DB.Exec(createUsersTable)
 	if err != nil {
 		panic(err)
+
+	}
+
+	_, err = DB.Exec(createEventsTable)
+	if err != nil {
+		panic(err)
+
 	}
 }
 
@@ -159,4 +174,54 @@ func GetEventByID(id int64) (*models.Event, error) {
 	}
 
 	return &event, nil
+}
+
+func GetUsers() []models.User {
+	getUsers := `
+	SELECT *
+	FROM users;
+	`
+
+	var users []models.User
+
+	rows, err := DB.Query(getUsers)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user models.User
+		err = rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email)
+		if err != nil {
+			panic(err)
+		}
+		users = append(users, user)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return users
+}
+
+func InsertUserIntoDB(u *models.User) error {
+	insertEvent := `
+	INSERT INTO users (firstName, lastName, email)
+	VALUES(?, ?, ?);`
+	stmt, err := DB.Prepare(insertEvent)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(u.FirstName, u.LastName, u.Email)
+	if err != nil {
+		panic(err)
+	}
+	id, err := result.LastInsertId()
+	u.ID = id
+	return err
 }
