@@ -1,2 +1,2 @@
-DELETE http://localhost:8080/events/abd
+DELETE http://localhost:8080/events/6
 content-type: application/json
