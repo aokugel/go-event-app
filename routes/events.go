@@ -46,11 +46,19 @@ func getEventByID(context *gin.Context) {
 
 func updateEvent(context *gin.Context) {
 	var updatedEvent models.Event
+
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
+		fmt.Println(err)
+		return
+	}
 	if err := context.BindJSON(&updatedEvent); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
 		return
 	}
-	err := db.UpdateEvent(&updatedEvent)
+	updatedEvent.ID = int64(id)
+	err = db.UpdateEvent(&updatedEvent)
 	if err != nil {
 		fmt.Println(err)
 		return

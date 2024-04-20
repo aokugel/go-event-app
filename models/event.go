@@ -8,7 +8,7 @@ type Event struct {
 	Description string
 	Location    string    `binding:"required"`
 	Date        time.Time `binding:"required"`
-	Invitees    int       `binding:"required"`
+	Invitees    int
 	UserID      int64
 }
 
