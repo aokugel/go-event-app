@@ -25,26 +25,28 @@ func InitDB() {
 }
 
 func createTables() {
+
+	createUsersTable := `
+	CREATE TABLE IF NOT EXISTS users (
+		userid INTEGER PRIMARY KEY AUTOINCREMENT,
+		firstName TEXT,
+		lastName TEXT NOT NULL,
+		email TEXT NOT NULL UNIQUE,
+		password TEXT
+	);`
+
 	createEventsTable := `
 	CREATE TABLE IF NOT EXISTS events (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		eventid INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		description TEXT,
 		location TEXT NOT NULL,
 		date DATETIME NOT NULL,
 		invitees INTEGER NOT NULL,
 		userid INTEGER,
-		FOREIGN KEY(userid) REFERENCES users(id)
+		FOREIGN KEY(userid) REFERENCES users(userid)
 	);`
 
-	createUsersTable := `
-	CREATE TABLE IF NOT EXISTS users (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		firstName TEXT,
-		lastName TEXT NOT NULL,
-		email TEXT NOT NULL
-	);
-	`
 	_, err := DB.Exec(createUsersTable)
 	if err != nil {
 		panic(err)
@@ -105,18 +107,18 @@ func UpdateEvent(e *models.Event) error {
 func DeleteEvent(id int64) error {
 	deleteEvent := `
 	DELETE FROM events 
-	WHERE id = ?;`
+	WHERE eventid = ?;`
 	stmt, err := DB.Prepare(deleteEvent)
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(id)
+	_, err = stmt.Exec(id)
 	if err != nil {
 		panic(err)
 	}
-	id, err = result.LastInsertId()
+	//id, err = result.LastInsertId()
 	return err
 }
 
@@ -160,7 +162,7 @@ func GetEventByID(id int64) (*models.Event, error) {
 	getEvent := `
 	SELECT *
 	FROM events
-	WHERE id = ?;
+	WHERE eventid = ?;
 	`
 
 	row := DB.QueryRow(getEvent, id)
@@ -192,7 +194,7 @@ func GetUsers() []models.User {
 
 	for rows.Next() {
 		var user models.User
-		err = rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email)
+		err = rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password)
 		if err != nil {
 			panic(err)
 		}
@@ -209,15 +211,15 @@ func GetUsers() []models.User {
 
 func InsertUserIntoDB(u *models.User) error {
 	insertEvent := `
-	INSERT INTO users (firstName, lastName, email)
-	VALUES(?, ?, ?);`
+	INSERT INTO users (firstName, lastName, email, password)
+	VALUES(?, ?, ?, ?);`
 	stmt, err := DB.Prepare(insertEvent)
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(u.FirstName, u.LastName, u.Email)
+	result, err := stmt.Exec(u.FirstName, u.LastName, u.Email, u.Password)
 	if err != nil {
 		panic(err)
 	}

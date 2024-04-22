@@ -5,14 +5,17 @@ type User struct {
 	FirstName string
 	LastName  string `binding:"required"`
 	Email     string `binding:"required"`
+	Password  string `binding:"required"`
+	//Wonder if i should make this a private property and not export it?
 }
 
-func NewUser(id int64, fname string, lname string, email string) *User {
+func NewUser(id int64, fname string, lname string, email string, password string) *User {
 	return &User{
 		ID:        id,
 		FirstName: fname,
 		LastName:  lname,
 		Email:     email,
+		Password:  password,
 	}
 
 }
