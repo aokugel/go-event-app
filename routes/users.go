@@ -8,6 +8,7 @@ import (
 	"example.com/rest-api/models"
 	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func getUsers(context *gin.Context) {
@@ -30,5 +31,31 @@ func createUser(context *gin.Context) {
 	}
 	db.InsertUserIntoDB(&newUser)
 	context.IndentedJSON(http.StatusCreated, gin.H{"message": "user account has been created successfully."})
+
+}
+
+func userLogin(context *gin.Context) {
+	var loginAttempt models.User
+	if err := context.BindJSON(&loginAttempt); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
+		fmt.Println(err)
+		return
+	}
+	existingUser, err := db.GetUserByEmail(loginAttempt.Email)
+
+	if err != nil {
+		fmt.Println("No user exists with that email")
+		fmt.Println(err)
+		context.JSON(http.StatusNotFound, gin.H{"message": "No user with this email"})
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(loginAttempt.Password))
+	if err != nil {
+		fmt.Println("Password incorrectamundo")
+		fmt.Println(err)
+		context.JSON(http.StatusForbidden, gin.H{"message": "Incorrect password"})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"message": "Access Granted"})
 
 }

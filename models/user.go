@@ -3,7 +3,7 @@ package models
 type User struct {
 	ID        int64
 	FirstName string
-	LastName  string `binding:"required"`
+	LastName  string
 	Email     string `binding:"required"`
 	Password  string `binding:"required"`
 	//Wonder if i should make this a private property and not export it?

@@ -227,3 +227,16 @@ func InsertUserIntoDB(u *models.User) error {
 	u.ID = id
 	return err
 }
+
+func GetUserByEmail(email string) (models.User, error) {
+	var user models.User
+	query := `SELECT * FROM users WHERE email = ?`
+	row := DB.QueryRow(query, email)
+	err := row.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password)
+
+	if err != nil {
+		fmt.Println("Error Retrieving User")
+		return models.User{}, err
+	}
+	return user, nil
+}

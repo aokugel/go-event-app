@@ -14,5 +14,9 @@ func RegisterRoutes(server *gin.Engine) {
 	//users
 	server.GET("/users", getUsers)
 	server.POST("/signup", createUser)
+	server.POST("/login", userLogin)
+
+	// jwt
+	server.POST("/jwt/token")
 
 }
