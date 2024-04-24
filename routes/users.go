@@ -3,11 +3,13 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"example.com/rest-api/db"
 	"example.com/rest-api/models"
 	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -56,6 +58,24 @@ func userLogin(context *gin.Context) {
 		context.JSON(http.StatusForbidden, gin.H{"message": "Incorrect password"})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"message": "Access Granted"})
+
+	//this will eventually be outsourced to a function
+	key := []byte(os.Getenv("TOKEN_SECRET"))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"iss":  "anthonykugel.com",
+			"sub":  existingUser.Email,
+			"name": existingUser.FirstName + " " + existingUser.LastName,
+			"foo":  2,
+		})
+	signedString, err := token.SignedString(key)
+
+	if err != nil {
+		fmt.Println("Error generating token")
+		fmt.Println(err)
+		context.JSON(http.StatusForbidden, gin.H{"message": "Error generating token"})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"token": signedString})
 
 }
