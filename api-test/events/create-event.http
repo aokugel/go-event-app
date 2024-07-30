@@ -1,5 +1,6 @@
 POST http://localhost:8080/events
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjIyODk0MzAsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiSmltbXkgTWNDcmlja2V0Iiwic3ViIjoid2FsYXNkeUBib2phbmdsZS5wZGYifQ.0WI6W_8iPezKqhGhVxZCJeg-ISSDhPK6XHuOKdOMxPY
 
 {
     "Name": "The carnival",

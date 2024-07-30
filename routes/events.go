@@ -21,6 +21,9 @@ func postEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
 		return
 	}
+	accessToken := context.Request.Header.Get("Authorization")
+	print(accessToken)
+
 	db.InsertEventIntoDB(&newEvent)
 	context.IndentedJSON(http.StatusCreated, db.GetEvents())
 

@@ -3,13 +3,11 @@ package routes
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"example.com/rest-api/db"
 	"example.com/rest-api/models"
 	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -59,16 +57,7 @@ func userLogin(context *gin.Context) {
 		return
 	}
 
-	//this will eventually be outsourced to a function
-	key := []byte(os.Getenv("TOKEN_SECRET"))
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"iss":  "anthonykugel.com",
-			"sub":  existingUser.Email,
-			"name": existingUser.FirstName + " " + existingUser.LastName,
-			"foo":  2,
-		})
-	signedString, err := token.SignedString(key)
+	signedString, err := utils.GetToken(existingUser.ID, existingUser.Email, existingUser.FirstName+" "+existingUser.LastName)
 
 	if err != nil {
 		fmt.Println("Error generating token")
