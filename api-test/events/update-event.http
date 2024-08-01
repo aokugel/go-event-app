@@ -1,9 +1,9 @@
 PATCH http://localhost:8080/events/6
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1MjMwMTIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.2HYMUb-sAE7l_Hkoufx_UWVzYIYI7Xo0aMh8mRl_mrs
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1Mzc4MzksImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.R62lYJ-h5YgMxwfVF7VuQ6psCVL-UDWtfzrktEqS_W8
 
 {
     "Location": "A telephone booth",
-    "Name": "Joshua tree california",
+    "Name": "memes",
     "Invitees": 45
 }
