@@ -3,7 +3,6 @@ package routes
 import (
 	"fmt"
 	"net/http"
-	"reflect"
 	"strconv"
 
 	"example.com/rest-api/db"
@@ -19,7 +18,7 @@ func getEvents(context *gin.Context) {
 
 func postEvent(context *gin.Context) {
 	accessToken := context.Request.Header.Get("Authorization")
-	claim, err := utils.ParseToken(accessToken)
+	userID, err := utils.ValidateToken(accessToken)
 	if err != nil {
 		errString := fmt.Sprintf("%v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"Message": errString})
@@ -33,15 +32,7 @@ func postEvent(context *gin.Context) {
 	}
 
 	// Clean this code up it is fucking disgusting.
-	int64id, ok := claim["userId"].(float64)
-
-	if !ok {
-		fmt.Println("error with type assertion")
-		fmt.Println(int64id)
-		fmt.Println(reflect.TypeOf(claim["userId"]))
-	}
-	newEvent.UserID = int64(int64id)
-	print(newEvent.UserID)
+	newEvent.UserID = userID
 
 	db.InsertEventIntoDB(&newEvent)
 	context.IndentedJSON(http.StatusCreated, db.GetEvents())

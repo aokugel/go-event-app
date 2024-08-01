@@ -40,7 +40,7 @@ func GetToken(id int64, email string, name string) (signedString string, err err
 
 }
 
-func ParseToken(accessToken string) (jwt.MapClaims, error) {
+func ValidateToken(accessToken string) (int64, error) {
 	parsedToken, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 
@@ -50,15 +50,21 @@ func ParseToken(accessToken string) (jwt.MapClaims, error) {
 		return key, nil
 	})
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 	if !parsedToken.Valid {
-		return nil, errors.New("invalid token")
+		return 0, errors.New("invalid token")
 	}
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, errors.New("claim is of incorrect type")
+		return 0, errors.New("claim is of incorrect type")
 	}
 
-	return claims, nil
+	userID, ok := claims["userId"].(float64)
+
+	if !ok {
+		return 0, errors.New("userid is of wrong type")
+	}
+
+	return int64(userID), nil
 }
