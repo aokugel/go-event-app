@@ -47,6 +47,15 @@ func createTables() {
 		FOREIGN KEY(userid) REFERENCES users(userid)
 	);`
 
+	createRegistrationsTable := `
+	CREATE TABLE IF NOT EXISTS registrations (
+		registrationsid INTEGER PRIMARY KEY AUTOINCREMENT,
+		eventid INTEGER,
+		userid INTEGER,
+		FOREIGN KEY(eventid) REFERENCES EVENTS(eventid),
+		FOREIGN KEY(userid) REFERENCES users(userid)
+	);`
+
 	_, err := DB.Exec(createUsersTable)
 	if err != nil {
 		panic(err)
@@ -54,6 +63,12 @@ func createTables() {
 	}
 
 	_, err = DB.Exec(createEventsTable)
+	if err != nil {
+		panic(err)
+
+	}
+
+	_, err = DB.Exec(createRegistrationsTable)
 	if err != nil {
 		panic(err)
 
@@ -239,4 +254,20 @@ func GetUserByEmail(email string) (models.User, error) {
 		return models.User{}, err
 	}
 	return user, nil
+}
+
+func RegisterUserForEvent(userid int64, eventid int64) {
+	insertEvent := `
+	INSERT INTO registrations (eventid, userid)
+	VALUES(?, ?);`
+	stmt, err := DB.Prepare(insertEvent)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userid, eventid)
+	if err != nil {
+		panic(err)
+	}
 }

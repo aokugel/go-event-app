@@ -1,6 +1,6 @@
-PATCH http://localhost:8080/events/6
+PATCH http://localhost:8080/events/8
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1Mzc4MzksImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.R62lYJ-h5YgMxwfVF7VuQ6psCVL-UDWtfzrktEqS_W8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1NDg2MDUsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.UKbGWJ_vy53Br1db9GG0Icr7I_-ajgalNbUrQqIjjII
 
 {
     "Location": "A telephone booth",

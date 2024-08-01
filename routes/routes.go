@@ -11,12 +11,15 @@ func RegisterRoutes(server *gin.Engine) {
 	server.PATCH("/events/:id", updateEvent)
 	server.DELETE("/events/:id", deleteEvent)
 
+	//registrations
+	server.POST("/events/:id/register", registerUserForEvent)
+
 	//users
 	server.GET("/users", getUsers)
 	server.POST("/signup", createUser)
 	server.POST("/login", userLogin)
 
-	// jwt
+	//jwt
 	server.POST("/jwt/token")
 
 }

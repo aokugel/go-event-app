@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"example.com/rest-api/db"
+	"example.com/rest-api/middleware"
 	"example.com/rest-api/models"
-	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,13 +17,9 @@ func getEvents(context *gin.Context) {
 }
 
 func postEvent(context *gin.Context) {
-	accessToken := context.Request.Header.Get("Authorization")
-	userID, err := utils.ValidateToken(accessToken)
-	if err != nil {
-		errString := fmt.Sprintf("%v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"Message": errString})
-		return
-	}
+
+	// can be factored out
+	userID := middleware.Authenticate(context)
 
 	var newEvent models.Event
 	if err := context.BindJSON(&newEvent); err != nil {
@@ -31,7 +27,6 @@ func postEvent(context *gin.Context) {
 		return
 	}
 
-	// Clean this code up it is fucking disgusting.
 	newEvent.UserID = userID
 
 	db.InsertEventIntoDB(&newEvent)
@@ -58,13 +53,9 @@ func getEventByID(context *gin.Context) {
 }
 
 func updateEvent(context *gin.Context) {
-	accessToken := context.Request.Header.Get("Authorization")
-	userID, err := utils.ValidateToken(accessToken)
-	if err != nil {
-		errString := fmt.Sprintf("%v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"Message": errString})
-		return
-	}
+
+	//can be factored out
+	userID := middleware.Authenticate(context)
 
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
@@ -94,13 +85,8 @@ func updateEvent(context *gin.Context) {
 }
 
 func deleteEvent(context *gin.Context) {
-	accessToken := context.Request.Header.Get("Authorization")
-	userID, err := utils.ValidateToken(accessToken)
-	if err != nil {
-		errString := fmt.Sprintf("%v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"Message": errString})
-		return
-	}
+	//can be factored out
+	userID := middleware.Authenticate(context)
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
@@ -122,4 +108,22 @@ func deleteEvent(context *gin.Context) {
 		return
 	}
 	context.IndentedJSON(http.StatusCreated, db.GetEvents())
+}
+
+func registerUserForEvent(context *gin.Context) {
+	userID := middleware.Authenticate(context)
+	eventID, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
+		fmt.Println(err)
+		return
+	}
+	_, err = db.GetEventByID(int64(eventID))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "An event does not exist by that id"})
+		return
+	}
+
+	db.RegisterUserForEvent(userID, int64(eventID))
+
 }
