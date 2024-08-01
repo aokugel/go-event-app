@@ -1,12 +1,11 @@
 POST http://localhost:8080/events
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjIyODk0MzAsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiSmltbXkgTWNDcmlja2V0Iiwic3ViIjoid2FsYXNkeUBib2phbmdsZS5wZGYifQ.0WI6W_8iPezKqhGhVxZCJeg-ISSDhPK6XHuOKdOMxPY
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI0ODQxOTIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphIiwic3ViIjoicnphQHd1dGFuZ2ZpbmFuY2lhbC5jb20iLCJ1c2VySWQiOjF9.5rw34hYHvIz_Qi9Mg9yO_MhlyGGFqzJvTAwt_Fq6iXk
 
 {
-    "Name": "The carnival",
-    "Description":  "Hella carnies in hurr rn",
-    "Location": "Somewhere over the mother loving rainboy",
+    "Name": "Wu Tang Album launch",
+    "Description":  "secret wu tang album launch partay",
+    "Location": "under an interstate overpass",
     "Date": "2025-08-13T14:59:27.725943945-05:00",
-    "Invitees": 12000,
-    "UserID": 3
+    "Invitees": 45
 }

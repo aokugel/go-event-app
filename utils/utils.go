@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"os"
 	"time"
 
@@ -23,7 +24,7 @@ func HashPassword(password string) (string, error) {
 func GetToken(id int64, email string, name string) (signedString string, err error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"UserId": id,
+			"userId": id,
 			"iss":    "anthonykugel.com",
 			"sub":    email,
 			"name":   name,
@@ -37,4 +38,27 @@ func GetToken(id int64, email string, name string) (signedString string, err err
 
 	return signedString, nil
 
+}
+
+func ParseToken(accessToken string) (jwt.MapClaims, error) {
+	parsedToken, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+
+		if !ok {
+			return nil, errors.New("token isn't correctly signed")
+		}
+		return key, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !parsedToken.Valid {
+		return nil, errors.New("invalid token")
+	}
+	claims, ok := parsedToken.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("claim is of incorrect type")
+	}
+
+	return claims, nil
 }

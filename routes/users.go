@@ -56,7 +56,6 @@ func userLogin(context *gin.Context) {
 		context.JSON(http.StatusForbidden, gin.H{"message": "Incorrect password"})
 		return
 	}
-
 	signedString, err := utils.GetToken(existingUser.ID, existingUser.Email, existingUser.FirstName+" "+existingUser.LastName)
 
 	if err != nil {

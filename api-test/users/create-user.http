@@ -2,9 +2,9 @@ POST http://localhost:8080/signup
 content-type: application/json
 
 {
-    "firstName": "Jimmy",
-    "lastName":  "McCricket",
-    "email": "walasdy@bojangle.pdf",
-    "password": "bingomcbongo"
+    "firstName": "Anthony",
+    "lastName":  "Bobanza",
+    "email": "rza@wutangfinancial.com",
+    "password": "shimmyshimmyya"
 }
 
