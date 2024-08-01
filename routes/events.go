@@ -58,6 +58,13 @@ func getEventByID(context *gin.Context) {
 }
 
 func updateEvent(context *gin.Context) {
+	accessToken := context.Request.Header.Get("Authorization")
+	userID, err := utils.ValidateToken(accessToken)
+	if err != nil {
+		errString := fmt.Sprintf("%v", err)
+		context.JSON(http.StatusBadRequest, gin.H{"Message": errString})
+		return
+	}
 
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
@@ -72,6 +79,10 @@ func updateEvent(context *gin.Context) {
 	}
 	if err := context.BindJSON(&existingEvent); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
+		return
+	}
+	if existingEvent.UserID != userID {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "users can only modify events that they have created"})
 		return
 	}
 	err = db.UpdateEvent(existingEvent)

@@ -88,7 +88,7 @@ func UpdateEvent(e *models.Event) error {
 		Date = ?, 
 		Invitees = ?, 
 		Userid = ?
-	WHERE id = ?;`
+	WHERE eventid = ?;`
 	stmt, err := DB.Prepare(updateEvent)
 	if err != nil {
 		panic(err)

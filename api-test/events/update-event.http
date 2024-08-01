@@ -1,7 +1,9 @@
-PATCH http://localhost:8080/events/15
+PATCH http://localhost:8080/events/6
 content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1MjMwMTIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.2HYMUb-sAE7l_Hkoufx_UWVzYIYI7Xo0aMh8mRl_mrs
 
 {
-    "Location": "An abounded mall",
+    "Location": "A telephone booth",
+    "Name": "Joshua tree california",
     "Invitees": 45
 }

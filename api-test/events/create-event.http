@@ -1,11 +1,10 @@
 POST http://localhost:8080/events
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1MjI2NTEsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphIiwic3ViIjoicnphQHd1dGFuZ2ZpbmFuY2lhbC5jb20iLCJ1c2VySWQiOjF9.bC4RJtVmTiWRPPyi9RiH8P2sU9dJkJMroAFmGt-dSjM
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1MjMwMTIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.2HYMUb-sAE7l_Hkoufx_UWVzYIYI7Xo0aMh8mRl_mrs
 {
-    "Name": "Wu Tang Album launch",
-    "Description":  "secret wu tang album launch partay",
-    "Location": "under an interstate overpass",
+    "Name": "something or another",
+    "Description":  "honestly i couldnt tell you",
+    "Location": "wut lol",
     "Date": "2025-08-13T14:59:27.725943945-05:00",
     "Invitees": 45
 }
