@@ -50,8 +50,8 @@ func createTables() {
 	createRegistrationsTable := `
 	CREATE TABLE IF NOT EXISTS registrations (
 		registrationsid INTEGER PRIMARY KEY AUTOINCREMENT,
-		eventid INTEGER,
 		userid INTEGER,
+		eventid INTEGER,
 		FOREIGN KEY(eventid) REFERENCES EVENTS(eventid),
 		FOREIGN KEY(userid) REFERENCES users(userid)
 	);`
@@ -257,10 +257,10 @@ func GetUserByEmail(email string) (models.User, error) {
 }
 
 func RegisterUserForEvent(userid int64, eventid int64) {
-	insertEvent := `
-	INSERT INTO registrations (eventid, userid)
+	insertRegistration := `
+	INSERT INTO registrations (userid, eventid)
 	VALUES(?, ?);`
-	stmt, err := DB.Prepare(insertEvent)
+	stmt, err := DB.Prepare(insertRegistration)
 	if err != nil {
 		panic(err)
 	}
@@ -270,4 +270,62 @@ func RegisterUserForEvent(userid int64, eventid int64) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func UnegisterUserFromEvent(userid int64, eventid int64) {
+	deleteRegistration := `
+	DELETE FROM registrations
+	WHERE userid = ?
+	AND eventid = ?;`
+	stmt, err := DB.Prepare(deleteRegistration)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userid, eventid)
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+// its going to wind up looking something like this.
+func GetEventsByRegisteredUser(userid int64) (events []models.Event) {
+	registeredEvents := `
+	SELECT name, description, location, date, invitees 
+	FROM events 
+	INNER JOIN registrations
+	ON registrations.registrationsid = events.eventid
+	WHERE registrations.userid = ?;
+	`
+	stmt, err := DB.Prepare(registeredEvents)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	rows, err := DB.Query(registeredEvents)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var event models.Event
+
+		err = rows.Scan(&event.Name, &event.Description, &event.Location, &event.Date, &event.Invitees)
+
+		if err != nil {
+			panic(err)
+		}
+
+		events = append(events, event)
+	}
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return events
 }

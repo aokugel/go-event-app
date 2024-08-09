@@ -19,7 +19,12 @@ func getEvents(context *gin.Context) {
 func postEvent(context *gin.Context) {
 
 	// can be factored out
-	userID := middleware.Authenticate(context)
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
 
 	var newEvent models.Event
 	if err := context.BindJSON(&newEvent); err != nil {
@@ -55,7 +60,12 @@ func getEventByID(context *gin.Context) {
 func updateEvent(context *gin.Context) {
 
 	//can be factored out
-	userID := middleware.Authenticate(context)
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
 
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
@@ -86,7 +96,12 @@ func updateEvent(context *gin.Context) {
 
 func deleteEvent(context *gin.Context) {
 	//can be factored out
-	userID := middleware.Authenticate(context)
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
@@ -111,7 +126,12 @@ func deleteEvent(context *gin.Context) {
 }
 
 func registerUserForEvent(context *gin.Context) {
-	userID := middleware.Authenticate(context)
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
 	eventID, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
@@ -125,5 +145,31 @@ func registerUserForEvent(context *gin.Context) {
 	}
 
 	db.RegisterUserForEvent(userID, int64(eventID))
+	context.JSON(http.StatusOK, gin.H{"message": "registration successful"})
 
+}
+
+func unregisterUserForEvent(context *gin.Context) {
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
+	eventID, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
+		fmt.Println(err)
+		return
+	}
+	_, err = db.GetEventByID(int64(eventID))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "An event does not exist by that id"})
+		return
+	}
+	fmt.Printf("userID: %v, eventID: %v\n", userID, eventID)
+
+	db.UnegisterUserFromEvent(userID, int64(eventID))
+
+	context.JSON(http.StatusOK, gin.H{"message": "unregistration successful"})
 }
