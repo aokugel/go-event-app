@@ -293,7 +293,7 @@ func UnegisterUserFromEvent(userid int64, eventid int64) {
 // its going to wind up looking something like this.
 func GetEventsByRegisteredUser(userid int64) (events []models.Event) {
 	registeredEvents := `
-	SELECT name, description, location, date, invitees 
+	SELECT name, description, location, date, invitees, events.eventid, events.userid
 	FROM events 
 	INNER JOIN registrations
 	ON registrations.registrationsid = events.eventid
@@ -305,7 +305,7 @@ func GetEventsByRegisteredUser(userid int64) (events []models.Event) {
 	}
 	defer stmt.Close()
 
-	rows, err := DB.Query(registeredEvents)
+	rows, err := DB.Query(registeredEvents, userid)
 	if err != nil {
 		panic(err)
 	}
@@ -314,7 +314,7 @@ func GetEventsByRegisteredUser(userid int64) (events []models.Event) {
 	for rows.Next() {
 		var event models.Event
 
-		err = rows.Scan(&event.Name, &event.Description, &event.Location, &event.Date, &event.Invitees)
+		err = rows.Scan(&event.Name, &event.Description, &event.Location, &event.Date, &event.Invitees, &event.ID, &event.UserID)
 
 		if err != nil {
 			panic(err)

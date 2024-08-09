@@ -173,3 +173,17 @@ func unregisterUserForEvent(context *gin.Context) {
 
 	context.JSON(http.StatusOK, gin.H{"message": "unregistration successful"})
 }
+
+func getEventsByRegisteredUser(context *gin.Context) {
+	userID, err := middleware.Authenticate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
+		fmt.Println(err)
+		return
+	}
+
+	events := db.GetEventsByRegisteredUser(int64(userID))
+
+	context.JSON(http.StatusOK, events)
+
+}
