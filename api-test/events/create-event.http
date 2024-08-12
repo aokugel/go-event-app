@@ -1,11 +1,11 @@
 POST http://localhost:8080/events
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI1NDg2MDUsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6Imd6YUB3dXRhbmdmaW5hbmNpYWwuY29tIiwidXNlcklkIjoyfQ.UKbGWJ_vy53Br1db9GG0Icr7I_-ajgalNbUrQqIjjII
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjM0Njc3NDIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6ImRAd3V0YW5nZmluYW5jaWFsLmNvbSIsInVzZXJJZCI6Nn0.WrCi7zNjZHes5XjgXMoXIMIVGMST72wsUDOPyfZ2cks
 
 {
-    "Name": "hi neeeerds",
-    "Description":  "honestly i couldnt tell you",
-    "Location": "wut lol",
+    "Name": "test event 1",
+    "Description":  "test description",
+    "Location": "testville usa",
     "Date": "2025-08-13T14:59:27.725943945-05:00",
     "Invitees": 45
 }

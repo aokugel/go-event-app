@@ -256,7 +256,7 @@ func GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func RegisterUserForEvent(userid int64, eventid int64) {
+func CreateUserRegistration(userid int64, eventid int64) {
 	insertRegistration := `
 	INSERT INTO registrations (userid, eventid)
 	VALUES(?, ?);`
@@ -270,9 +270,15 @@ func RegisterUserForEvent(userid int64, eventid int64) {
 	if err != nil {
 		panic(err)
 	}
+	err = updateEventAttendees(eventid, 1)
+
+	if err != nil {
+		panic(err)
+	}
+
 }
 
-func UnegisterUserFromEvent(userid int64, eventid int64) {
+func DeleteUserRegistration(userid int64, eventid int64) {
 	deleteRegistration := `
 	DELETE FROM registrations
 	WHERE userid = ?
@@ -284,6 +290,11 @@ func UnegisterUserFromEvent(userid int64, eventid int64) {
 	defer stmt.Close()
 
 	_, err = stmt.Exec(userid, eventid)
+	if err != nil {
+		panic(err)
+	}
+	err = updateEventAttendees(eventid, -1)
+
 	if err != nil {
 		panic(err)
 	}
@@ -328,4 +339,23 @@ func GetEventsByRegisteredUser(userid int64) (events []models.Event) {
 	}
 
 	return events
+}
+
+func updateEventAttendees(eventid int64, change int) error {
+	alterInvitees := `
+	UPDATE events 
+	SET invitees = invitees + ? 
+	WHERE eventid = ?;
+	`
+	stmt, err := DB.Prepare(alterInvitees)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(change, eventid)
+	if err != nil {
+		panic(err)
+	}
+	return err
 }

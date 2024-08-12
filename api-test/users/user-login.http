@@ -2,7 +2,7 @@ POST http://localhost:8080/login
 content-type: application/json
 
 {
-    "email": "gza@wutangfinancial.com",
+    "email": "d@wutangfinancial.com",
     "password": "shimmyshimmyya"
 }
 
