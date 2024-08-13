@@ -1,3 +1,3 @@
-DELETE http://localhost:8080/events/13
+POST http://localhost:8080/events/2/register
 content-type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjM1ODMzNjQsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6ImRAd3V0YW5nZmluYW5jaWFsLmNvbSIsInVzZXJJZCI6Nn0.pQLOioJSeldtRbExSu6qC0dZXjlCz7fRtv0Swhr4c04

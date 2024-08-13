@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"example.com/rest-api/db"
-	"example.com/rest-api/middleware"
 	"example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
 )
@@ -19,12 +18,7 @@ func getEvents(context *gin.Context) {
 func postEvent(context *gin.Context) {
 
 	// can be factored out
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
 
 	var newEvent models.Event
 	if err := context.BindJSON(&newEvent); err != nil {
@@ -60,12 +54,7 @@ func getEventByID(context *gin.Context) {
 func updateEvent(context *gin.Context) {
 
 	//can be factored out
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
 
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
@@ -96,12 +85,8 @@ func updateEvent(context *gin.Context) {
 
 func deleteEvent(context *gin.Context) {
 	//can be factored out
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
+
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})

@@ -6,17 +6,14 @@ import (
 	"strconv"
 
 	"example.com/rest-api/db"
-	"example.com/rest-api/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func registerUserForEvent(context *gin.Context) {
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
+
+	fmt.Println("registerforeventid", userID)
+
 	eventID, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
@@ -35,12 +32,8 @@ func registerUserForEvent(context *gin.Context) {
 }
 
 func unregisterUserForEvent(context *gin.Context) {
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
+
 	eventID, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "could not parse json object"})
@@ -60,14 +53,11 @@ func unregisterUserForEvent(context *gin.Context) {
 }
 
 func getEventsByRegisteredUser(context *gin.Context) {
-	userID, err := middleware.Authenticate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "authentication failed"})
-		fmt.Println(err)
-		return
-	}
+	userID := context.GetInt64("userID")
 
-	events := db.GetEventsByRegisteredUser(int64(userID))
+	events := db.GetEventsByRegisteredUser(userID)
+
+	fmt.Println(userID, events)
 
 	context.JSON(http.StatusOK, events)
 

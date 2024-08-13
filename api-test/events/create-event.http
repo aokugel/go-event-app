@@ -1,9 +1,9 @@
 POST http://localhost:8080/events
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjM0Njc3NDIsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6ImRAd3V0YW5nZmluYW5jaWFsLmNvbSIsInVzZXJJZCI6Nn0.WrCi7zNjZHes5XjgXMoXIMIVGMST72wsUDOPyfZ2cks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjM1ODMzNjQsImlzcyI6ImFudGhvbnlrdWdlbC5jb20iLCJuYW1lIjoiQW50aG9ueSBCb2JhbnphMiIsInN1YiI6ImRAd3V0YW5nZmluYW5jaWFsLmNvbSIsInVzZXJJZCI6Nn0.pQLOioJSeldtRbExSu6qC0dZXjlCz7fRtv0Swhr4c04
 
 {
-    "Name": "test event 1",
+    "Name": "test event 5",
     "Description":  "test description",
     "Location": "testville usa",
     "Date": "2025-08-13T14:59:27.725943945-05:00",
