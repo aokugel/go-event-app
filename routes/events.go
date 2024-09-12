@@ -17,7 +17,6 @@ func getEvents(context *gin.Context) {
 
 func postEvent(context *gin.Context) {
 
-	// can be factored out
 	userID := context.GetInt64("userID")
 
 	var newEvent models.Event
@@ -53,7 +52,6 @@ func getEventByID(context *gin.Context) {
 
 func updateEvent(context *gin.Context) {
 
-	//can be factored out
 	userID := context.GetInt64("userID")
 
 	id, err := strconv.Atoi(context.Param("id"))
@@ -84,7 +82,7 @@ func updateEvent(context *gin.Context) {
 }
 
 func deleteEvent(context *gin.Context) {
-	//can be factored out
+
 	userID := context.GetInt64("userID")
 
 	id, err := strconv.Atoi(context.Param("id"))
